@@ -1,13 +1,16 @@
-from flask import Flask, render_template, redirect, request
+from flask import Flask
+import asyncio
 from game import create_tasks
 import os
 
+loop = asyncio.get_event_loop()
 app = Flask(__name__)
 
 
 @app.route('/')
 async def root():
-    return create_tasks()
+    res = loop.run_until_complete(create_tasks())
+    return res
 
 if __name__ == '__main__':
 
