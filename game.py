@@ -79,13 +79,14 @@ def create_tasks(case='default'):
         go.Scatter(x=stonk.dates[:half], y=stonk.history[:half], marker_color='rgb(120, 120, 120)',
                    fillcolor='rgba(241, 241, 241, 0.5)', fill='tozeroy'))
 
-    half_chart.update_xaxes(showline=True, linewidth=2, linecolor='rgb(241, 241, 241)', gridcolor='rgb(241, 241, 241)', dtick=7)
-    half_chart.update_yaxes(showline=True, linewidth=2, linecolor='rgb(241, 241, 241)', gridcolor='rgb(241, 241, 241)')
+    half_chart.update_xaxes(showline=True, linewidth=2, linecolor='rgb(241, 241, 241)', gridcolor='rgb(241, 241, 241)', dtick=14)
+    half_chart.update_yaxes(showline=True, linewidth=2, linecolor='rgb(241, 241, 241)', gridcolor='rgb(241, 241, 241)', dtick=100)
 
-    chart_bytes = half_chart.to_image(format="png", width=600, height=350, scale=5)
+    chart_bytes = half_chart.to_image(format="png", width=375, height=285, scale=5)
 
     image_data = chart_bytes
     image = Image.open(io.BytesIO(image_data))
+    image.save('images/half_chart.png')
     # image.show()
 
     # draw full plot
@@ -107,21 +108,25 @@ def create_tasks(case='default'):
         go.Scatter(x=stonk.dates, y=stonk.history, marker_color=line_color,
                    fillcolor=fillcolor, fill='tozeroy'))
 
-    chart.update_xaxes(showline=True, linewidth=2, linecolor='rgb(241, 241, 241)', gridcolor='rgb(241, 241, 241)', dtick=14)
-    chart.update_yaxes(showline=True, linewidth=2, linecolor='rgb(241, 241, 241)', gridcolor='rgb(241, 241, 241)')
+    chart.update_xaxes(showline=True, linewidth=2, linecolor='rgb(241, 241, 241)', gridcolor='rgb(241, 241, 241)', dtick=28)
+    chart.update_yaxes(showline=True, linewidth=2, linecolor='rgb(241, 241, 241)', gridcolor='rgb(241, 241, 241)', dtick=100)
 
-    full_chart_bytes = chart.to_image(format="png", width=600, height=350, scale=5)
+    chart_bytes = chart.to_image(format="png", width=375, height=285, scale=5)
 
-    image_data = full_chart_bytes
+    image_data = chart_bytes
     image = Image.open(io.BytesIO(image_data))
+    image.save('images/chart.png')
     # image.show()
 
     res = {
         'half_difference': half_difference,
-        'difference': difference
+        'difference': difference,
+        'half_img_path': 'images/half_chart.png',
+        'img_path': 'images/chart.png'
     }
 
     return json.dumps(res)
+
 
 if __name__ == '__main__':
     print(create_tasks(case='default'))
