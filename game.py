@@ -86,7 +86,7 @@ def create_tasks(case='default'):
 
     image_data = chart_bytes
     image = Image.open(io.BytesIO(image_data))
-    image.show()
+    # image.show()
 
     # draw full plot
     if difference > 0:
@@ -114,7 +114,7 @@ def create_tasks(case='default'):
 
     image_data = full_chart_bytes
     image = Image.open(io.BytesIO(image_data))
-    image.show()
+    # image.show()
 
     res = {
         'half_difference': half_difference,
