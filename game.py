@@ -75,13 +75,13 @@ def create_tasks(case='default'):
         right_answer = 2
 
     elif start <= half_difference >= difference:
-        right_answer = 1
+        right_answer = 0
 
     elif start >= half_difference >= difference:
-        right_answer = 1
+        right_answer = 0
 
     elif start >= half_difference <= difference:
-        right_answer = 3
+        right_answer = 1
 
     # draw half plot
     layout = Layout(
