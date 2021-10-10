@@ -87,7 +87,12 @@ def create_tasks(case='default'):
     layout = Layout(
         plot_bgcolor='rgba(0,0,0,0)',
         yaxis={'side': 'right'},
-        margin={'t': 0},
+        margin={
+            't': 0,
+            'l': 0,
+            'r': 0,
+            'b': 0
+        },
         coloraxis={
             'colorbar_tickfont_color': 'rgb(241, 241, 241)'
         }
