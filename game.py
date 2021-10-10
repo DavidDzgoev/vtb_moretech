@@ -60,14 +60,27 @@ def create_tasks(case='default'):
 
     half = int(stonk.history.__len__() / 2)
 
-    half_difference = stonk.history[half] - stonk.history[0]
-    difference = stonk.history[-1] - stonk.history[0]
+    start = stonk.history[0]
+    half_difference = ((stonk.history[half] - stonk.history[0]) / stonk.history[0]) + 1
+    difference = ((stonk.history[-1] - stonk.history[0]) / stonk.history[0]) + 1
+
+    if start <= half_difference <= difference:
+        right_answer = 2
+
+    elif start <= half_difference >= difference:
+        right_answer = 1
+
+    elif start >= half_difference >= difference:
+        right_answer = 1
+
+    elif start >= half_difference <= difference:
+        right_answer = 3
 
     # draw half plot
-
     layout = Layout(
         plot_bgcolor='rgba(0,0,0,0)',
         yaxis={'side': 'right'},
+        margin={'t': 0},
         coloraxis={
             'colorbar_tickfont_color': 'rgb(241, 241, 241)'
         }
@@ -82,7 +95,7 @@ def create_tasks(case='default'):
     half_chart.update_xaxes(showline=True, linewidth=2, linecolor='rgb(241, 241, 241)', gridcolor='rgb(241, 241, 241)', dtick=14)
     half_chart.update_yaxes(showline=True, linewidth=2, linecolor='rgb(241, 241, 241)', gridcolor='rgb(241, 241, 241)', dtick=100)
 
-    chart_bytes = half_chart.to_image(format="png", width=375, height=285, scale=5)
+    chart_bytes = half_chart.to_image(format="png", width=414, height=285, scale=5)
 
     image_data = chart_bytes
     image = Image.open(io.BytesIO(image_data))
@@ -111,7 +124,7 @@ def create_tasks(case='default'):
     chart.update_xaxes(showline=True, linewidth=2, linecolor='rgb(241, 241, 241)', gridcolor='rgb(241, 241, 241)', dtick=28)
     chart.update_yaxes(showline=True, linewidth=2, linecolor='rgb(241, 241, 241)', gridcolor='rgb(241, 241, 241)', dtick=100)
 
-    chart_bytes = chart.to_image(format="png", width=375, height=285, scale=5)
+    chart_bytes = chart.to_image(format="png", width=414, height=285, scale=5)
 
     image_data = chart_bytes
     image = Image.open(io.BytesIO(image_data))
@@ -121,8 +134,9 @@ def create_tasks(case='default'):
     res = {
         'half_difference': half_difference,
         'difference': difference,
-        'half_img_path': 'images/half_chart.png',
-        'img_path': 'images/chart.png'
+        'right_answer': right_answer,
+        'half_img_path': 'https://bbt-vtb.herokuapp.com/half_chart.png',
+        'img_path': 'https://bbt-vtb.herokuapp.com/chart.png'
     }
 
     return json.dumps(res)
