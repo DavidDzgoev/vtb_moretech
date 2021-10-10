@@ -1,4 +1,4 @@
-from flask import Flask, send_from_directory
+from flask import Flask, send_from_directory, request
 from game import create_tasks
 import os
 
@@ -8,7 +8,7 @@ app.config['UPLOAD_FOLDER'] = 'images'
 
 @app.route('/', methods=['GET'])
 def root():
-    return create_tasks()
+    return create_tasks(request.args.get('case'))
 
 
 @app.route('/<path:filename>', methods=['GET'])
