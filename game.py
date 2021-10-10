@@ -23,10 +23,11 @@ def random_date(start=datetime(2016, month=1, day=1), end=datetime(2018, month=1
 
 
 class Stonk:
-    def __init__(self, start, p):
+    def __init__(self, start, p, bad_stonk=False):
         self.history = []
         self.value = start
         self.p = p
+        self.bad_stonk = bad_stonk
         start_date = random_date()
         self.dates = [i.strftime("%d.%m") for i in np.arange(start_date, start_date + timedelta(days=60), timedelta(days=1)).astype(datetime)]
 
@@ -35,11 +36,15 @@ class Stonk:
         x = randrange(0, 100)
 
         if self.p / 2 < x < self.p:
-            self.value += randrange(5, 15)
+                self.value += randrange(5, 15)
         elif x < self.p / 2:
-            pass
+            if self.bad_stonk:
+                self.value += randrange(15, 25)
         else:
-            self.value -= randrange(10, 20)
+            if self.bad_stonk:
+                self.value -= randrange(5, 15)
+            else:
+                self.value -= randrange(10, 20)
 
         self.value = max(0, self.value)
         self.value = min(HEIGHT - 1, self.value)
@@ -47,14 +52,16 @@ class Stonk:
 
 def create_tasks(case='default'):
     if case == 'risk':
-        p = 30
+        p = 50
+        stonk = Stonk(randrange(150, 350), p, True)
     elif case == 'div':
-        p = 30
+        p = 50
+        stonk = Stonk(randrange(150, 350), p, True)
     else:
         p = 80
+        stonk = Stonk(randrange(150, 350), p)
 
     # simulate market activity
-    stonk = Stonk(randrange(150, 350), p)
     while len(stonk.history) < WIDTH - 1:
         stonk.sim()
 
@@ -103,15 +110,15 @@ def create_tasks(case='default'):
     # image.show()
 
     # draw full plot
-    if difference > 0:
+    if difference > 1:
         line_color = 'green'
         fillcolor = 'rgba(0, 254, 0, 0.1)'
 
-    elif difference == 0:
+    elif difference == 1:
         line_color = 'blue'
         fillcolor = 'rgba(0, 0, 254, 0.1)'
 
-    elif difference < 0:
+    elif difference < 1:
         line_color = 'red'
         fillcolor = 'rgba(254, 0, 0, 0.1)'
 
@@ -143,4 +150,4 @@ def create_tasks(case='default'):
 
 
 if __name__ == '__main__':
-    print(create_tasks(case='default'))
+    print(create_tasks(case='risk'))
