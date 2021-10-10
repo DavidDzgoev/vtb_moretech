@@ -4,6 +4,8 @@ import plotly.graph_objects as go
 from plotly.graph_objs import Layout
 import numpy as np
 import json
+from PIL import Image
+import io
 
 HEIGHT = 100000
 WIDTH = 61
@@ -26,7 +28,7 @@ class Stonk:
         self.value = start
         self.p = p
         start_date = random_date()
-        self.dates = np.arange(start_date, start_date + timedelta(days=60), timedelta(days=1)).astype(datetime)
+        self.dates = [i.strftime("%d.%m") for i in np.arange(start_date, start_date + timedelta(days=60), timedelta(days=1)).astype(datetime)]
 
     def sim(self):
         self.history.append(self.value)
@@ -77,17 +79,14 @@ def create_tasks(case='default'):
         go.Scatter(x=stonk.dates[:half], y=stonk.history[:half], marker_color='rgb(120, 120, 120)',
                    fillcolor='rgba(241, 241, 241, 0.5)', fill='tozeroy'))
 
-    half_chart.update_xaxes(showline=True, linewidth=2, linecolor='rgb(241, 241, 241)', gridcolor='rgb(241, 241, 241)')
+    half_chart.update_xaxes(showline=True, linewidth=2, linecolor='rgb(241, 241, 241)', gridcolor='rgb(241, 241, 241)', dtick=7)
     half_chart.update_yaxes(showline=True, linewidth=2, linecolor='rgb(241, 241, 241)', gridcolor='rgb(241, 241, 241)')
 
     chart_bytes = half_chart.to_image(format="png", width=600, height=350, scale=5)
 
-    from PIL import Image
-    import io
-
     image_data = chart_bytes
     image = Image.open(io.BytesIO(image_data))
-    # image.show()
+    image.show()
 
     # draw full plot
     if difference > 0:
@@ -108,17 +107,14 @@ def create_tasks(case='default'):
         go.Scatter(x=stonk.dates, y=stonk.history, marker_color=line_color,
                    fillcolor=fillcolor, fill='tozeroy'))
 
-    chart.update_xaxes(showline=True, linewidth=2, linecolor='rgb(241, 241, 241)', gridcolor='rgb(241, 241, 241)')
+    chart.update_xaxes(showline=True, linewidth=2, linecolor='rgb(241, 241, 241)', gridcolor='rgb(241, 241, 241)', dtick=14)
     chart.update_yaxes(showline=True, linewidth=2, linecolor='rgb(241, 241, 241)', gridcolor='rgb(241, 241, 241)')
 
     full_chart_bytes = chart.to_image(format="png", width=600, height=350, scale=5)
 
-    from PIL import Image
-    import io
-
     image_data = full_chart_bytes
     image = Image.open(io.BytesIO(image_data))
-    # image.show()
+    image.show()
 
     res = {
         'half_difference': half_difference,
