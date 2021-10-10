@@ -39,7 +39,7 @@ class Stonk:
                 self.value += randrange(5, 15)
         elif x < self.p / 2:
             if self.bad_stonk:
-                self.value += randrange(15, 25)
+                self.value += randrange(0, 5)
         else:
             if self.bad_stonk:
                 self.value -= randrange(5, 15)
